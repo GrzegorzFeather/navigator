@@ -1,6 +1,6 @@
 package com.feathersoft.navigator.app.config;
 
-import android.support.v4.app.Fragment;
+import com.feathersoft.navigator.ui.fragment.MenuOptionFragment;
 
 
 /**
@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
  */
 public interface HomeMenuOption {
 
-    public Class<? extends Fragment> getContentClass();
+    public Class<? extends MenuOptionFragment> getContentClass();
     public int getTitleRes();
     public int getIconRes();
 

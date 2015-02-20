@@ -1,11 +1,11 @@
 package com.feathersoft.navigator.sample.ui;
 
-import android.support.v7.app.ActionBarActivity;
+import com.feathersoft.navigator.ui.NavigatorActivity;
 
 
 /**
  * Created by GrzegorzFeathers on 2/20/15.
  */
-public class HomeActivity extends ActionBarActivity {
+public class HomeActivity extends NavigatorActivity {
 
 }

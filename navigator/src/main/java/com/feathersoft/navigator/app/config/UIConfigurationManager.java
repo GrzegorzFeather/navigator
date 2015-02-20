@@ -17,15 +17,15 @@ public final class UIConfigurationManager {
 
     private static UIConfigurationManager mConfigurationManager = null;
 
-    private Map<String, UIConfiguration> mConfigurations = new HashMap<>();
-    private UIConfiguration mCurrentUIConfiguration = null;
+    private Map<String, UIConfigurationTBR> mConfigurations = new HashMap<>();
+    private UIConfigurationTBR mCurrentUIConfigurationTBR = null;
 
-    public static void init(UIConfiguration... configurations){
+    public static void init(UIConfigurationTBR... configurations){
         if(mConfigurationManager == null){
             mConfigurationManager = new UIConfigurationManager();
         }
 
-        for(UIConfiguration configuration : configurations){
+        for(UIConfigurationTBR configuration : configurations){
             mConfigurationManager.addUIConfiguration(configuration, false);
         }
     }
@@ -40,16 +40,16 @@ public final class UIConfigurationManager {
 
     private UIConfigurationManager(){}
 
-    private UIConfiguration getCurrentUIConfiguration(){
-        if(this.mCurrentUIConfiguration == null){
+    private UIConfigurationTBR getCurrentUIConfiguration(){
+        if(this.mCurrentUIConfigurationTBR == null){
             throw new IllegalStateException("The UIConfiguration hasn't been selected"
                 + ", please call UIConfigurationManager.setCurrentUIConfiguration(String uiConfigurationTag)");
         }
 
-        return this.mCurrentUIConfiguration;
+        return this.mCurrentUIConfigurationTBR;
     }
 
-    public void addUIConfiguration(UIConfiguration uiConfiguration, boolean setAsCurrent){
+    public void addUIConfiguration(UIConfigurationTBR uiConfiguration, boolean setAsCurrent){
         this.mConfigurations.put(uiConfiguration.getUITag(), uiConfiguration);
         if(setAsCurrent){
             this.setCurrentUIConfiguration(uiConfiguration.getUITag());
@@ -62,17 +62,17 @@ public final class UIConfigurationManager {
                 + "UIConfigurationManager.addUIConfiguration(UIConfiguration uiConfiguration, boolean setAsCurrent)");
         }
 
-        this.mCurrentUIConfiguration = this.mConfigurations.get(uiConfigurationTag);
+        this.mCurrentUIConfigurationTBR = this.mConfigurations.get(uiConfigurationTag);
     }
 
-    public void launchConfiguration(Context context, Intent intent, UIConfiguration uiConfiguration){
+    public void launchConfiguration(Context context, Intent intent, UIConfigurationTBR uiConfiguration){
         if(!this.mConfigurations.containsKey(uiConfiguration.getUITag())){
             this.addUIConfiguration(uiConfiguration, true);
         }
         context.startActivity(intent);
     }
 
-    public void launchConfiguration(Context context, UIConfiguration uiConfiguration,
+    public void launchConfiguration(Context context, UIConfigurationTBR uiConfiguration,
                                     Class<? extends NavigatorActivity> targetNavigator){
         Intent intent = new Intent(context, targetNavigator);
         if(!(context instanceof Activity)){
@@ -106,17 +106,17 @@ public final class UIConfigurationManager {
         return this.getCurrentUIConfiguration().getMenuOptions();
     }
 
-    public static abstract class UIConfiguration {
+    public static abstract class UIConfigurationTBR {
 
-        private static final UIConfiguration defaultUIConfig
-                = new DefaultUIConfiguration(0, new HomeMenuOption[]{}, null);
+        private static final UIConfigurationTBR defaultUIConfig
+                = new DefaultUIConfigurationTBR(0, new HomeMenuOption[]{}, null);
 
         private int mVisibleNameRes;
         private HomeMenuOption mDefaultMenuOption;
         private HomeMenuOption[] mMenuOptions;
 
-        private UIConfiguration(int visibleNameRes, HomeMenuOption[] menuOptions,
-                                HomeMenuOption defaultMenuOption) {
+        protected UIConfigurationTBR(int visibleNameRes, HomeMenuOption[] menuOptions,
+                                   HomeMenuOption defaultMenuOption) {
             this.mVisibleNameRes = visibleNameRes;
             this.mMenuOptions = menuOptions;
             this.mDefaultMenuOption = defaultMenuOption;
@@ -132,15 +132,15 @@ public final class UIConfigurationManager {
             return this.mMenuOptions;
         }
 
-        private static class DefaultUIConfiguration extends UIConfiguration {
-            private DefaultUIConfiguration(int visibleNameRes, HomeMenuOption[] menuOptions,
-                                           HomeMenuOption defaultMenuOption) {
+        private static class DefaultUIConfigurationTBR extends UIConfigurationTBR {
+            private DefaultUIConfigurationTBR(int visibleNameRes, HomeMenuOption[] menuOptions,
+                                              HomeMenuOption defaultMenuOption) {
                 super(visibleNameRes, menuOptions, defaultMenuOption);
             }
 
             @Override
             protected String getUITag() {
-                return DefaultUIConfiguration.class.getName();
+                return DefaultUIConfigurationTBR.class.getName();
             }
         }
 
