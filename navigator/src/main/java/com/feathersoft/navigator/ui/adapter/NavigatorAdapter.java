@@ -1,7 +1,7 @@
 package com.feathersoft.navigator.ui.adapter;
 
 import com.feathersoft.navigator.R;
-import com.feathersoft.navigator.app.config.HomeMenuOption;
+import com.feathersoft.navigator.config.NavigatorMenuOption;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,21 +17,21 @@ import java.util.List;
 /**
  * Created by GrzegorzFeathers on 1/5/15.
  */
-public class HomeMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NavigatorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_MENU_ITEM = 1;
 
-    private List<HomeMenuOption> mDataSet;
+    private List<NavigatorMenuOption> mDataSet;
     private View.OnClickListener mOnClickListener;
 
-    public HomeMenuAdapter(HomeMenuOption[] menuOptions,
-                           View.OnClickListener clickListener){
+    public NavigatorAdapter(NavigatorMenuOption[] menuOptions,
+                            View.OnClickListener clickListener){
         this.updateContent(menuOptions);
         this.mOnClickListener = clickListener;
     }
 
-    private void updateContent(HomeMenuOption[] menuOptions){
+    private void updateContent(NavigatorMenuOption[] menuOptions){
         this.mDataSet = Arrays.asList(menuOptions);
     }
 
@@ -55,7 +55,7 @@ public class HomeMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         } else {
             MenuItemViewHolder menuItemHolder = (MenuItemViewHolder) holder;
-            HomeMenuOption option = this.getItem(position);
+            NavigatorMenuOption option = this.getItem(position);
             menuItemHolder.mImgIcon.get().setImageResource(option.getIconRes());
             menuItemHolder.mLblTitle.get().setText(option.getTitleRes());
         }
@@ -71,7 +71,7 @@ public class HomeMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return position == 0 ? TYPE_HEADER : TYPE_MENU_ITEM;
     }
 
-    public HomeMenuOption getItem(int position){
+    public NavigatorMenuOption getItem(int position){
         return this.mDataSet.get(position - 1);
     }
 

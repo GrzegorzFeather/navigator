@@ -32,7 +32,7 @@
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:name="com.feathersoft.navigator.ui.fragment.HomeMenuFragment"
+            android:name="com.feathersoft.navigator.ui.fragment.NavigatorMenuFragment"
             tools:layout="@layout/fragment_home_menu"
             android:layout_marginTop="?attr/actionBarSize"/>
 

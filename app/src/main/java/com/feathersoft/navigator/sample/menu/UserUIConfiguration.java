@@ -1,38 +1,31 @@
 package com.feathersoft.navigator.sample.menu;
 
-import com.feathersoft.navigator.app.config.HomeMenuOption;
-import com.feathersoft.navigator.app.config.UIConfigurationManager;
+import com.feathersoft.navigator.config.NavigatorMenuOption;
+import com.feathersoft.navigator.config.UIConfiguration;
 import com.feathersoft.navigator.sample.R;
-import com.feathersoft.navigator.sample.ui.fragment.FirstOptionFragment;
-import com.feathersoft.navigator.ui.fragment.MenuOptionFragment;
+import com.feathersoft.navigator.sample.ui.fragment.FirstOptionFragmentNavigatorContentFragment;
+import com.feathersoft.navigator.ui.fragment.NavigatorContentFragment;
 
 
 /**
  * Created by GrzegorzFeathers on 2/20/15.
  */
-public class UserUIConfiguration extends UIConfigurationManager.UIConfigurationTBR {
-
-    public static final String TAG = UserUIConfiguration.class.getName();
+public class UserUIConfiguration extends UIConfiguration {
 
     public UserUIConfiguration() {
         super(R.string.app_name, UserMenu.values(), UserMenu.FIRST);
     }
 
-    @Override
-    protected String getUITag() {
-        return TAG;
-    }
+    public enum UserMenu implements NavigatorMenuOption {
 
-    public enum UserMenu implements HomeMenuOption {
-
-        FIRST(FirstOptionFragment.class, R.string.app_name, R.drawable.ic_launcher)
+        FIRST(FirstOptionFragmentNavigatorContentFragment.class, R.string.app_name, R.drawable.ic_launcher)
         ;
 
-        private Class<? extends MenuOptionFragment> mContentClass;
+        private Class<? extends NavigatorContentFragment> mContentClass;
         private int mTitleRes;
         private int mIconRes;
 
-        private UserMenu(Class<? extends MenuOptionFragment> contentClass,
+        private UserMenu(Class<? extends NavigatorContentFragment> contentClass,
                          int titleRes, int iconRes){
             this.mContentClass = contentClass;
             this.mTitleRes = titleRes;
@@ -40,7 +33,7 @@ public class UserUIConfiguration extends UIConfigurationManager.UIConfigurationT
         }
 
         @Override
-        public Class<? extends MenuOptionFragment> getContentClass() {
+        public Class<? extends NavigatorContentFragment> getContentClass() {
             return this.mContentClass;
         }
 

@@ -1,16 +1,13 @@
 package com.feathersoft.navigator.ui.fragment;
 
 import com.feathersoft.navigator.R;
-import com.feathersoft.navigator.app.config.HomeMenuOption;
-import com.feathersoft.navigator.app.config.UIConfigurationManager;
-import com.feathersoft.navigator.ui.adapter.HomeMenuAdapter;
-import com.feathersoft.navigator.ui.widget.NavigatorToolbar;
+import com.feathersoft.navigator.ui.NavigatorActivity;
+import com.feathersoft.navigator.ui.adapter.NavigatorAdapter;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,9 +23,9 @@ import java.util.List;
 /**
  * Created by GrzegorzFeathers on 1/5/15.
  */
-public class HomeMenuFragment extends Fragment implements View.OnClickListener {
+public class NavigatorMenuFragment extends Fragment implements View.OnClickListener {
 
-    public static final String TAG = HomeMenuFragment.class.getSimpleName();
+    public static final String TAG = NavigatorMenuFragment.class.getSimpleName();
 
     private View mRootView;
     private DrawerLayout mDrawerLayout;
@@ -39,7 +36,7 @@ public class HomeMenuFragment extends Fragment implements View.OnClickListener {
 
     private List<OnDrawerSlideListener> mDrawerListeners;
 
-    public HomeMenuFragment(){
+    public NavigatorMenuFragment(){
         this.mDrawerListeners = new ArrayList<>();
     }
 
@@ -58,7 +55,7 @@ public class HomeMenuFragment extends Fragment implements View.OnClickListener {
         this.mRecyclerMenuOptionsView.setHasFixedSize(true);
 
         this.mRecyclerMenuOptionsManager = new LinearLayoutManager(this.getMenuHostActivity());
-        this.mRecyclerMenuOptionsAdapter = new HomeMenuAdapter(UIConfigurationManager.getInstance().getMenuOptions(), this);
+        this.mRecyclerMenuOptionsAdapter = new NavigatorAdapter(this.getMenuHostActivity().getMenuOptions(), this);
 
         this.mRecyclerMenuOptionsView.setLayoutManager(this.mRecyclerMenuOptionsManager);
         this.mRecyclerMenuOptionsView.setAdapter(this.mRecyclerMenuOptionsAdapter);
@@ -76,7 +73,6 @@ public class HomeMenuFragment extends Fragment implements View.OnClickListener {
         this.mDrawerLayout.setScrimColor(this.getResources().getColor(android.R.color.transparent));
         this.mDrawerToogle = new ActionBarDrawerToggle(
                 this.getMenuHostActivity(), this.mDrawerLayout,
-                this.getMenuHostActivity().getToolbar().getToolbarComp(),
                 R.string.app_name, R.string.app_name){
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -116,10 +112,10 @@ public class HomeMenuFragment extends Fragment implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    private MenuHostActivity getMenuHostActivity(){
-        MenuHostActivity menuHostActivity = null;
+    private NavigatorActivity getMenuHostActivity(){
+        NavigatorActivity menuHostActivity = null;
         try {
-            menuHostActivity = (MenuHostActivity) this.getActivity();
+            menuHostActivity = (NavigatorActivity) this.getActivity();
         } catch (ClassCastException e) {
             throw e;
         } finally {
@@ -132,7 +128,7 @@ public class HomeMenuFragment extends Fragment implements View.OnClickListener {
         this.mDrawerLayout.closeDrawer(Gravity.LEFT);
         int position = this.mRecyclerMenuOptionsView.getChildPosition(v);
         this.getMenuHostActivity().onHomeMenuOptionSelected(
-                UIConfigurationManager.getInstance().getMenuOptions()[position - 1]);
+                this.getMenuHostActivity().getMenuOptions()[position - 1]);
     }
 
     public boolean isDrawerOpen(){
@@ -151,20 +147,6 @@ public class HomeMenuFragment extends Fragment implements View.OnClickListener {
 
     public void removeOnDrawerSlideListener(OnDrawerSlideListener listener){
         this.mDrawerListeners.remove(listener);
-    }
-
-    public static abstract class MenuHostActivity extends ActionBarActivity {
-
-        public abstract NavigatorToolbar getToolbar();
-
-        public abstract void setSubtitle(int subtitleRes);
-
-        public abstract void onHomeMenuOptionSelected(HomeMenuOption menuOption);
-
-        public abstract void addOnDrawerSlideListener(OnDrawerSlideListener listener);
-
-        public abstract void removeOnDrawerSlideListener(OnDrawerSlideListener listener);
-
     }
 
     public static interface OnDrawerSlideListener {

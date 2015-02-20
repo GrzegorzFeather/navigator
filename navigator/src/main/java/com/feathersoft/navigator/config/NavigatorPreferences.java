@@ -1,4 +1,4 @@
-package com.feathersoft.navigator.app;
+package com.feathersoft.navigator.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;

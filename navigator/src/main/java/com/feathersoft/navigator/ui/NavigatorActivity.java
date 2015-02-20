@@ -1,16 +1,17 @@
 package com.feathersoft.navigator.ui;
 
 import com.feathersoft.navigator.R;
-import com.feathersoft.navigator.app.config.HomeMenuOption;
-import com.feathersoft.navigator.app.config.UIConfigurationManager;
-import com.feathersoft.navigator.ui.fragment.HomeMenuFragment;
-import com.feathersoft.navigator.ui.fragment.MenuOptionFragment;
-import com.feathersoft.navigator.ui.widget.NavigatorToolbar;
+import com.feathersoft.navigator.config.NavigatorMenuOption;
+import com.feathersoft.navigator.config.UIConfiguration;
+import com.feathersoft.navigator.ui.fragment.NavigatorContentFragment;
+import com.feathersoft.navigator.ui.fragment.NavigatorMenuFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,50 +19,42 @@ import android.view.MenuItem;
 /**
  * Created by GrzegorzFeathers on 2/17/15.
  */
-public class NavigatorActivity extends HomeMenuFragment.MenuHostActivity implements Toolbar.OnMenuItemClickListener {
+public abstract class NavigatorActivity extends ActionBarActivity implements Toolbar.OnMenuItemClickListener {
 
     public static final String TAG = NavigatorActivity.class.getSimpleName();
     public static final int DEFAULT_FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
-    private NavigatorToolbar mToolbar;
+    private UIConfiguration mUIConfiguration;
+    private NavigatorMenuFragment mMenuFragment;
 
-    private HomeMenuFragment mMenuFragment;
+    public NavigatorActivity(UIConfiguration uiConfiguration){
+        this.mUIConfiguration = uiConfiguration == null ?
+                UIConfiguration.defaultUIConfig : uiConfiguration;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         this.setContentView(R.layout.activity_home);
         this.setupHome();
     }
 
     private void setupHome(){
-        this.mMenuFragment = (HomeMenuFragment) this.getSupportFragmentManager()
-                .findFragmentByTag(HomeMenuFragment.TAG);
+        this.mMenuFragment = (NavigatorMenuFragment) this.getSupportFragmentManager()
+                .findFragmentByTag(NavigatorMenuFragment.TAG);
 
-        this.mToolbar = (NavigatorToolbar) this.findViewById(R.id.toolbar);
+        ActionBar actionBar = this.getSupportActionBar();
 
-        // TODO: Add menu
-        //this.mToolbar.inflateMenu(R.menu.main);
-        this.mToolbar.setOnMenuItemClickListener(this);
-
-        this.mToolbar.setTitle(R.string.app_name);
-        this.pushToStack(UIConfigurationManager.getInstance().getDefaultMenuOption()
+        this.pushToStack(this.mUIConfiguration.getDefaultMenuOption()
                                  .getContentClass(), null, -1, false);
     }
 
-    @Override
-    public NavigatorToolbar getToolbar() {
-        return this.mToolbar;
-    }
-
     public void setSubtitle(int subtitleRes){
-        this.mToolbar.setSubtitle(subtitleRes);
+        this.getSupportActionBar().setSubtitle(subtitleRes);
     }
 
-    @Override
-    public void onHomeMenuOptionSelected(HomeMenuOption menuOption) {
-        if(menuOption.equals(UIConfigurationManager.getInstance().getDefaultMenuOption())){
+    public void onHomeMenuOptionSelected(NavigatorMenuOption menuOption) {
+        if(menuOption.equals(this.mUIConfiguration.getDefaultMenuOption())){
             this.clearStack();
         } else {
             this.replaceStack(menuOption.getContentClass(), null);
@@ -70,14 +63,20 @@ public class NavigatorActivity extends HomeMenuFragment.MenuHostActivity impleme
         this.supportInvalidateOptionsMenu();
     }
 
-    @Override
-    public void addOnDrawerSlideListener(HomeMenuFragment.OnDrawerSlideListener listener) {
+    public void addOnDrawerSlideListener(NavigatorMenuFragment.OnDrawerSlideListener listener) {
         this.mMenuFragment.addOnDrawerSlideListener(listener);
     }
 
-    @Override
-    public void removeOnDrawerSlideListener(HomeMenuFragment.OnDrawerSlideListener listener) {
+    public void removeOnDrawerSlideListener(NavigatorMenuFragment.OnDrawerSlideListener listener) {
         this.mMenuFragment.removeOnDrawerSlideListener(listener);
+    }
+
+    public NavigatorMenuOption[] getMenuOptions(){
+        return this.mUIConfiguration.getMenuOptions();
+    }
+
+    public NavigatorMenuOption getDefaultOption(){
+        return this.mUIConfiguration.getDefaultMenuOption();
     }
 
     public void clearStack(){
@@ -160,7 +159,7 @@ public class NavigatorActivity extends HomeMenuFragment.MenuHostActivity impleme
             this.mMenuFragment.closeDrawer();
         } else if(this.getCurrentVisibleContent() != null){
             Fragment currentContent = this.getCurrentVisibleContent();
-            if(!((MenuOptionFragment) currentContent).onBackPressed()){
+            if(!((NavigatorContentFragment) currentContent).onBackPressed()){
                 super.onBackPressed();
             }
         } else {
