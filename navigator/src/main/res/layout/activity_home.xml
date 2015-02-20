@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-            <com.mbsurfer.ui.widget.MBSToolbar
+            <com.feathersoft.navigator.ui.widget.NavigatorToolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/toolbar"/>
@@ -32,7 +32,7 @@
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:name="com.mbsurfer.ui.fragment.HomeMenuFragment"
+            android:name="com.feathersoft.navigator.ui.fragment.HomeMenuFragment"
             tools:layout="@layout/fragment_home_menu"
             android:layout_marginTop="?attr/actionBarSize"/>
 
