@@ -1,7 +1,8 @@
 package com.feathersoft.navigator.ui;
 
 import com.feathersoft.navigator.R;
-import com.feathersoft.navigator.app.NavigatorConfiguration;
+import com.feathersoft.navigator.app.config.HomeMenuOption;
+import com.feathersoft.navigator.app.config.UIConfigurationManager;
 import com.feathersoft.navigator.ui.fragment.HomeMenuFragment;
 import com.feathersoft.navigator.ui.fragment.MenuOptionFragment;
 import com.feathersoft.navigator.ui.widget.NavigatorToolbar;
@@ -17,9 +18,9 @@ import android.view.MenuItem;
 /**
  * Created by GrzegorzFeathers on 2/17/15.
  */
-public class HomeActivity extends HomeMenuFragment.MenuHostActivity implements Toolbar.OnMenuItemClickListener {
+public class NavigatorActivity extends HomeMenuFragment.MenuHostActivity implements Toolbar.OnMenuItemClickListener {
 
-    public static final String TAG = HomeActivity.class.getSimpleName();
+    public static final String TAG = NavigatorActivity.class.getSimpleName();
     public static final int DEFAULT_FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
     private NavigatorToolbar mToolbar;
@@ -45,8 +46,8 @@ public class HomeActivity extends HomeMenuFragment.MenuHostActivity implements T
         this.mToolbar.setOnMenuItemClickListener(this);
 
         this.mToolbar.setTitle(R.string.app_name);
-        this.pushToStack(NavigatorConfiguration.getDefaultMenuOption().getContentClass(),
-                         null, -1, false);
+        this.pushToStack(UIConfigurationManager.getInstance().getDefaultMenuOption()
+                                 .getContentClass(), null, -1, false);
     }
 
     @Override
@@ -59,8 +60,8 @@ public class HomeActivity extends HomeMenuFragment.MenuHostActivity implements T
     }
 
     @Override
-    public void onHomeMenuOptionSelected(NavigatorConfiguration.HomeMenuOption menuOption) {
-        if(menuOption.equals(NavigatorConfiguration.getDefaultMenuOption())){
+    public void onHomeMenuOptionSelected(HomeMenuOption menuOption) {
+        if(menuOption.equals(UIConfigurationManager.getInstance().getDefaultMenuOption())){
             this.clearStack();
         } else {
             this.replaceStack(menuOption.getContentClass(), null);

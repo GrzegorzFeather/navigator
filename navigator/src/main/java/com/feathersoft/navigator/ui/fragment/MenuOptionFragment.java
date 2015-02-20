@@ -1,7 +1,7 @@
 package com.feathersoft.navigator.ui.fragment;
 
 import com.feathersoft.navigator.R;
-import com.feathersoft.navigator.app.NavigatorConfiguration;
+import com.feathersoft.navigator.app.config.HomeMenuOption;
 import com.feathersoft.navigator.ui.widget.NavigatorToolbar;
 
 import android.support.v7.widget.Toolbar;
@@ -13,7 +13,7 @@ import android.widget.ImageButton;
  */
 public abstract class MenuOptionFragment extends BaseFragment {
 
-    private NavigatorConfiguration.HomeMenuOption mMenuOption;
+    private HomeMenuOption mMenuOption;
 
     public MenuOptionFragment(){
         this.mMenuOption = this.getMenuOption();
@@ -61,7 +61,7 @@ public abstract class MenuOptionFragment extends BaseFragment {
         }
     }
 
-    protected abstract NavigatorConfiguration.HomeMenuOption getMenuOption();
+    protected abstract HomeMenuOption getMenuOption();
 
     public boolean onBackPressed(){
         return false;

@@ -1,7 +1,8 @@
 package com.feathersoft.navigator.ui.fragment;
 
 import com.feathersoft.navigator.R;
-import com.feathersoft.navigator.app.NavigatorConfiguration;
+import com.feathersoft.navigator.app.config.HomeMenuOption;
+import com.feathersoft.navigator.app.config.UIConfigurationManager;
 import com.feathersoft.navigator.ui.adapter.HomeMenuAdapter;
 import com.feathersoft.navigator.ui.widget.NavigatorToolbar;
 
@@ -57,7 +58,7 @@ public class HomeMenuFragment extends Fragment implements View.OnClickListener {
         this.mRecyclerMenuOptionsView.setHasFixedSize(true);
 
         this.mRecyclerMenuOptionsManager = new LinearLayoutManager(this.getMenuHostActivity());
-        this.mRecyclerMenuOptionsAdapter = new HomeMenuAdapter(NavigatorConfiguration.getMenuOptions(), this);
+        this.mRecyclerMenuOptionsAdapter = new HomeMenuAdapter(UIConfigurationManager.getInstance().getMenuOptions(), this);
 
         this.mRecyclerMenuOptionsView.setLayoutManager(this.mRecyclerMenuOptionsManager);
         this.mRecyclerMenuOptionsView.setAdapter(this.mRecyclerMenuOptionsAdapter);
@@ -131,7 +132,7 @@ public class HomeMenuFragment extends Fragment implements View.OnClickListener {
         this.mDrawerLayout.closeDrawer(Gravity.LEFT);
         int position = this.mRecyclerMenuOptionsView.getChildPosition(v);
         this.getMenuHostActivity().onHomeMenuOptionSelected(
-                NavigatorConfiguration.getMenuOptions()[position - 1]);
+                UIConfigurationManager.getInstance().getMenuOptions()[position - 1]);
     }
 
     public boolean isDrawerOpen(){
@@ -158,7 +159,7 @@ public class HomeMenuFragment extends Fragment implements View.OnClickListener {
 
         public abstract void setSubtitle(int subtitleRes);
 
-        public abstract void onHomeMenuOptionSelected(NavigatorConfiguration.HomeMenuOption menuOption);
+        public abstract void onHomeMenuOptionSelected(HomeMenuOption menuOption);
 
         public abstract void addOnDrawerSlideListener(OnDrawerSlideListener listener);
 

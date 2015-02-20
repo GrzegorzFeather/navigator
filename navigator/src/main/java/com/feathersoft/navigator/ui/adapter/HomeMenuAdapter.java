@@ -1,8 +1,7 @@
 package com.feathersoft.navigator.ui.adapter;
 
 import com.feathersoft.navigator.R;
-
-import com.feathersoft.navigator.app.NavigatorConfiguration;
+import com.feathersoft.navigator.app.config.HomeMenuOption;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,21 +22,17 @@ public class HomeMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_MENU_ITEM = 1;
 
-    private List<NavigatorConfiguration.HomeMenuOption> mDataSet;
+    private List<HomeMenuOption> mDataSet;
     private View.OnClickListener mOnClickListener;
 
-    public HomeMenuAdapter(NavigatorConfiguration.HomeMenuOption[] menuOptions,
+    public HomeMenuAdapter(HomeMenuOption[] menuOptions,
                            View.OnClickListener clickListener){
         this.updateContent(menuOptions);
         this.mOnClickListener = clickListener;
     }
 
-    private void updateContent(NavigatorConfiguration.HomeMenuOption[] fullMenuOptions){
-        List<NavigatorConfiguration.HomeMenuOption> reducedMenuOptions = new ArrayList<>();
-        for(NavigatorConfiguration.HomeMenuOption o : fullMenuOptions){
-            if(o.isVisible()) { reducedMenuOptions.add(o);  }
-        }
-        this.mDataSet = reducedMenuOptions;
+    private void updateContent(HomeMenuOption[] menuOptions){
+        this.mDataSet = Arrays.asList(menuOptions);
     }
 
     @Override
@@ -60,7 +55,7 @@ public class HomeMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         } else {
             MenuItemViewHolder menuItemHolder = (MenuItemViewHolder) holder;
-            NavigatorConfiguration.HomeMenuOption option = this.getItem(position);
+            HomeMenuOption option = this.getItem(position);
             menuItemHolder.mImgIcon.get().setImageResource(option.getIconRes());
             menuItemHolder.mLblTitle.get().setText(option.getTitleRes());
         }
@@ -76,7 +71,7 @@ public class HomeMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return position == 0 ? TYPE_HEADER : TYPE_MENU_ITEM;
     }
 
-    public NavigatorConfiguration.HomeMenuOption getItem(int position){
+    public HomeMenuOption getItem(int position){
         return this.mDataSet.get(position - 1);
     }
 
