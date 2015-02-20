@@ -3,7 +3,9 @@ package com.feathersoft.navigator.sample.menu;
 import com.feathersoft.navigator.config.NavigatorMenuOption;
 import com.feathersoft.navigator.config.UIConfiguration;
 import com.feathersoft.navigator.sample.R;
-import com.feathersoft.navigator.sample.ui.fragment.FirstOptionFragmentNavigatorContentFragment;
+import com.feathersoft.navigator.sample.ui.fragment.FirstNavigatorContentFragment;
+import com.feathersoft.navigator.sample.ui.fragment.SecondNavigatorContentFragment;
+import com.feathersoft.navigator.sample.ui.fragment.ThirdNavigatorContentFragment;
 import com.feathersoft.navigator.ui.fragment.NavigatorContentFragment;
 
 
@@ -18,9 +20,9 @@ public class UserUIConfiguration extends UIConfiguration {
 
     public enum UserMenu implements NavigatorMenuOption {
 
-        FIRST(FirstOptionFragmentNavigatorContentFragment.class, R.string.app_name, R.drawable.ic_launcher),
-        SECOND(FirstOptionFragmentNavigatorContentFragment.class, R.string.app_name, R.drawable.ic_launcher),
-        THIRD(FirstOptionFragmentNavigatorContentFragment.class, R.string.app_name, R.drawable.ic_launcher),
+        FIRST(FirstNavigatorContentFragment.class, R.string.menu_opton1, R.drawable.ic_launcher),
+        SECOND(SecondNavigatorContentFragment.class, R.string.menu_opton2, R.drawable.ic_launcher),
+        THIRD(ThirdNavigatorContentFragment.class, R.string.menu_opton3, R.drawable.ic_launcher),
         ;
 
         private Class<? extends NavigatorContentFragment> mContentClass;

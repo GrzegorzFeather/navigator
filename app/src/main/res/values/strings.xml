@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Navigator</string>
+
+    <string name="menu_opton1">Option 1</string>
+    <string name="menu_opton2">Option 2</string>
+    <string name="menu_opton3">Option 3</string>
 </resources>
