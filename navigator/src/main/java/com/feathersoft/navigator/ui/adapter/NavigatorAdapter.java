@@ -24,6 +24,7 @@ public class NavigatorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private List<NavigatorMenuOption> mDataSet;
     private View.OnClickListener mOnClickListener;
+    private RecyclerView.ViewHolder mHeaderHolder = null;
 
     public NavigatorAdapter(NavigatorMenuOption[] menuOptions,
                             View.OnClickListener clickListener){
@@ -35,15 +36,18 @@ public class NavigatorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.mDataSet = Arrays.asList(menuOptions);
     }
 
+    public void setHeader(RecyclerView.ViewHolder headerHolder){
+        this.mHeaderHolder = headerHolder;
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == TYPE_HEADER){
-            View rootView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.layout_home_header, parent, false);
-            return new HeaderViewHolder(rootView);
+            return this.mHeaderHolder;
         } else {
             View rootView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_item_home_option, parent, false);
+                    .inflate(R.layout.list_item_navigator_option, parent, false);
             rootView.setOnClickListener(this.mOnClickListener);
             return new MenuItemViewHolder(rootView);
         }
@@ -63,33 +67,33 @@ public class NavigatorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return this.mDataSet.size() + 1;
+        return this.mHeaderHolder == null ?
+                this.mDataSet.size() : this.mDataSet.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? TYPE_HEADER : TYPE_MENU_ITEM;
+        if(this.mHeaderHolder == null){
+            return TYPE_MENU_ITEM;
+        } else {
+            return position == 0 ? TYPE_HEADER : TYPE_MENU_ITEM;
+        }
+    }
+
+    public int getRealItemPosition(int position){
+        if(this.mHeaderHolder == null){
+            return position;
+        } else {
+            return position - 1;
+        }
     }
 
     public NavigatorMenuOption getItem(int position){
-        return this.mDataSet.get(position - 1);
-    }
-
-    public static class HeaderViewHolder extends RecyclerView.ViewHolder {
-
-        private WeakReference<ImageView> mImgProfilePicture;
-        private WeakReference<TextView> mLblProfileName;
-
-        public HeaderViewHolder(View rootView){
-            super(rootView);
-            /*
-            this.mImgProfilePicture = new WeakReference<ImageView>(
-                    (ImageView) rootView.findViewById(R.id.img_profile_picture));
-            this.mLblProfileName = new WeakReference<TextView>(
-                    (TextView) rootView.findViewById(R.id.lbl_profile_name));
-            */
+        if(this.mHeaderHolder == null){
+            return this.mDataSet.get(position);
+        } else {
+            return this.mDataSet.get(position - 1);
         }
-
     }
 
     public static class MenuItemViewHolder extends RecyclerView.ViewHolder {

@@ -30,7 +30,7 @@ public class NavigatorMenuFragment extends Fragment implements View.OnClickListe
     private View mRootView;
     private DrawerLayout mDrawerLayout;
     private RecyclerView mRecyclerMenuOptionsView;
-    private RecyclerView.Adapter mRecyclerMenuOptionsAdapter;
+    private NavigatorAdapter mRecyclerMenuOptionsAdapter;
     private RecyclerView.LayoutManager mRecyclerMenuOptionsManager;
     private ActionBarDrawerToggle mDrawerToogle;
 
@@ -97,6 +97,12 @@ public class NavigatorMenuFragment extends Fragment implements View.OnClickListe
         this.mDrawerToogle.syncState();
     }
 
+    public void setMenuHeader(RecyclerView.ViewHolder headerHolder){
+        if(this.mRecyclerMenuOptionsAdapter != null){
+            this.mRecyclerMenuOptionsAdapter.setHeader(headerHolder);
+        }
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -128,7 +134,8 @@ public class NavigatorMenuFragment extends Fragment implements View.OnClickListe
         this.mDrawerLayout.closeDrawer(Gravity.LEFT);
         int position = this.mRecyclerMenuOptionsView.getChildPosition(v);
         this.getMenuHostActivity().onHomeMenuOptionSelected(
-                this.getMenuHostActivity().getMenuOptions()[position - 1]);
+                this.getMenuHostActivity().getMenuOptions()[
+                        this.mRecyclerMenuOptionsAdapter.getRealItemPosition(position)]);
     }
 
     public boolean isDrawerOpen(){

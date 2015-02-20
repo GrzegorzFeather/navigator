@@ -43,7 +43,9 @@ public abstract class NavigatorActivity extends ActionBarActivity implements Too
         this.mMenuFragment = (NavigatorMenuFragment) this.getSupportFragmentManager()
                 .findFragmentByTag(NavigatorMenuFragment.TAG);
 
-        ActionBar actionBar = this.getSupportActionBar();
+        ActionBar ab = this.getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowHomeEnabled(true);
 
         this.pushToStack(this.mUIConfiguration.getDefaultMenuOption()
                                  .getContentClass(), null, -1, false);

@@ -18,7 +18,9 @@ public class UserUIConfiguration extends UIConfiguration {
 
     public enum UserMenu implements NavigatorMenuOption {
 
-        FIRST(FirstOptionFragmentNavigatorContentFragment.class, R.string.app_name, R.drawable.ic_launcher)
+        FIRST(FirstOptionFragmentNavigatorContentFragment.class, R.string.app_name, R.drawable.ic_launcher),
+        SECOND(FirstOptionFragmentNavigatorContentFragment.class, R.string.app_name, R.drawable.ic_launcher),
+        THIRD(FirstOptionFragmentNavigatorContentFragment.class, R.string.app_name, R.drawable.ic_launcher),
         ;
 
         private Class<? extends NavigatorContentFragment> mContentClass;
