@@ -63,6 +63,8 @@ public class NavigatorMenuFragment extends Fragment implements View.OnClickListe
         return this.mRootView;
     }
 
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

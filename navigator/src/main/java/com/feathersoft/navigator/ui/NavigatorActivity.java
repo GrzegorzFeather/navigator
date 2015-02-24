@@ -7,11 +7,13 @@ import com.feathersoft.navigator.ui.fragment.NavigatorContentFragment;
 import com.feathersoft.navigator.ui.fragment.NavigatorMenuFragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,6 +44,14 @@ public abstract class NavigatorActivity extends ActionBarActivity implements Too
         this.setContentView(R.layout.activity_home);
         this.setupActivityState(savedInstanceState);
         this.setupHome();
+    }
+
+    protected abstract @Nullable RecyclerView.ViewHolder onCreateMenuHeader();
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        this.mMenuFragment.setMenuHeader(this.onCreateMenuHeader());
     }
 
     private void setupActivityState(Bundle bundle){
@@ -176,6 +186,7 @@ public abstract class NavigatorActivity extends ActionBarActivity implements Too
 
     @Override
     public void onBackPressed() {
+        Log.d(TAG, "mMenuFragment: " + this.mMenuFragment);
         if(this.mMenuFragment != null && this.mMenuFragment.isDrawerOpen()){
             this.mMenuFragment.closeDrawer();
         } else if(this.getCurrentVisibleContent() != null){

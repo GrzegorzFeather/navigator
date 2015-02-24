@@ -17,7 +17,7 @@
             android:layout_height="match_parent"/>
 
         <fragment android:id="@+id/fragment_home_menu"
-            android:tag="HomeMenuFragment"
+            android:tag="NavigatorMenuFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="left"
