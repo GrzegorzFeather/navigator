@@ -9,6 +9,7 @@ import com.feathersoft.navigator.ui.fragment.NavigatorContentFragment;
 public interface NavigatorMenuOption {
 
     public Class<? extends NavigatorContentFragment> getContentClass();
+    public int getItemId();
     public int getTitleRes();
     public int getIconRes();
 

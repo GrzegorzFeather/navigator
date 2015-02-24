@@ -41,6 +41,10 @@ public class UserUIConfiguration extends UIConfiguration {
             return this.mContentClass;
         }
 
+        public int getItemId(){
+            return this.ordinal();
+        }
+
         @Override
         public int getTitleRes() {
             return this.mTitleRes;

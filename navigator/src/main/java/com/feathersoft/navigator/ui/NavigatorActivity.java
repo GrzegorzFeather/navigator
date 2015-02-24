@@ -22,10 +22,14 @@ import android.view.MenuItem;
 public abstract class NavigatorActivity extends ActionBarActivity implements Toolbar.OnMenuItemClickListener {
 
     public static final String TAG = NavigatorActivity.class.getSimpleName();
+
+    private static final String ARG_CURRENT_MENU_ITEM = "arg_current_menu_item";
+
     public static final int DEFAULT_FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 
     private UIConfiguration mUIConfiguration;
     private NavigatorMenuFragment mMenuFragment;
+    private NavigatorMenuOption mCurrentSelection = null;
 
     public NavigatorActivity(UIConfiguration uiConfiguration){
         this.mUIConfiguration = uiConfiguration == null ?
@@ -36,7 +40,20 @@ public abstract class NavigatorActivity extends ActionBarActivity implements Too
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_home);
+        this.setupActivityState(savedInstanceState);
         this.setupHome();
+    }
+
+    private void setupActivityState(Bundle bundle){
+        if(bundle == null){
+            this.mCurrentSelection = this.mUIConfiguration.getDefaultMenuOption();
+            return;
+        }
+
+        this.mCurrentSelection = bundle.containsKey(ARG_CURRENT_MENU_ITEM)
+                && this.mUIConfiguration.findMenuOptionById(bundle.getInt(ARG_CURRENT_MENU_ITEM)) != null
+                    ? this.mUIConfiguration.findMenuOptionById(bundle.getInt(ARG_CURRENT_MENU_ITEM))
+                    : this.mUIConfiguration.getDefaultMenuOption();
     }
 
     private void setupHome(){
@@ -47,8 +64,10 @@ public abstract class NavigatorActivity extends ActionBarActivity implements Too
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowHomeEnabled(true);
 
-        this.pushToStack(this.mUIConfiguration.getDefaultMenuOption()
-                                 .getContentClass(), null, -1, false);
+        this.pushToStack(this.mUIConfiguration.getDefaultMenuOption().getContentClass(), null, -1, false);
+        if(!this.mCurrentSelection.equals(this.mUIConfiguration.getDefaultMenuOption())){
+            this.onHomeMenuOptionSelected(this.mCurrentSelection);
+        }
     }
 
     public void setSubtitle(int subtitleRes){
@@ -56,12 +75,12 @@ public abstract class NavigatorActivity extends ActionBarActivity implements Too
     }
 
     public void onHomeMenuOptionSelected(NavigatorMenuOption menuOption) {
-        if(menuOption.equals(this.mUIConfiguration.getDefaultMenuOption())){
+        this.mCurrentSelection = menuOption;
+        if(this.mCurrentSelection.equals(this.mUIConfiguration.getDefaultMenuOption())){
             this.clearStack();
         } else {
             this.replaceStack(menuOption.getContentClass(), null);
         }
-
         this.supportInvalidateOptionsMenu();
     }
 
@@ -163,6 +182,12 @@ public abstract class NavigatorActivity extends ActionBarActivity implements Too
             Fragment currentContent = this.getCurrentVisibleContent();
             if(!((NavigatorContentFragment) currentContent).onBackPressed()){
                 super.onBackPressed();
+                Class<? extends NavigatorContentFragment> currentContentClass =
+                        this.getCurrentVisibleContent() != null ? null :
+                        (Class<? extends NavigatorContentFragment>) this.getCurrentVisibleContent().getClass();
+                this.mCurrentSelection = this.mUIConfiguration.findMenuOptionByContentClass(currentContentClass) != null
+                        ? this.mUIConfiguration.findMenuOptionByContentClass(currentContentClass)
+                        : this.mUIConfiguration.getDefaultMenuOption();
             }
         } else {
             super.onBackPressed();
@@ -179,4 +204,15 @@ public abstract class NavigatorActivity extends ActionBarActivity implements Too
         return fm.findFragmentById(R.id.container);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        this.clearStack();
+        outState.putInt(ARG_CURRENT_MENU_ITEM, this.mCurrentSelection.getItemId());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
