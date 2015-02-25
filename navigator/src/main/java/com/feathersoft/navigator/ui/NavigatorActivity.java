@@ -186,7 +186,6 @@ public abstract class NavigatorActivity extends ActionBarActivity implements Too
 
     @Override
     public void onBackPressed() {
-        Log.d(TAG, "mMenuFragment: " + this.mMenuFragment);
         if(this.mMenuFragment != null && this.mMenuFragment.isDrawerOpen()){
             this.mMenuFragment.closeDrawer();
         } else if(this.getCurrentVisibleContent() != null){
